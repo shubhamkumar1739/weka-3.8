@@ -463,7 +463,7 @@ public class Evaluation implements Summarizable, RevisionHandler, Serializable {
           "KB information", "Correlation", "Complexity 0", "Complexity scheme",
           "Complexity improvement", "MAE", "RMSE", "RAE", "RRSE", "Coverage",
           "Region size", "TP rate", "FP rate", "Precision", "Recall", "F-measure",
-          "MCC", "ROC area", "PRC area"};
+          "MCC", "ROC area", "PRC area", "specificity", "sensitivity"};
 
   /**
    * Utility method to get a list of the names of all built-in and plugin
@@ -3368,13 +3368,16 @@ public class Evaluation implements Summarizable, RevisionHandler, Serializable {
     boolean displayMCC = m_metricsToDisplay.contains("mcc");
     boolean displayROC = m_metricsToDisplay.contains("roc area");
     boolean displayPRC = m_metricsToDisplay.contains("prc area");
+    boolean displaySen = m_metricsToDisplay.contains("sensitivity");
+    boolean displaySpec = m_metricsToDisplay.contains("specificity");
 
     StringBuffer text =
       new StringBuffer(title + "\n                 "
         + (displayTP ? "TP Rate  " : "") + (displayFP ? "FP Rate  " : "")
         + (displayP ? "Precision  " : "") + (displayR ? "Recall   " : "")
         + (displayFM ? "F-Measure  " : "") + (displayMCC ? "MCC      " : "")
-        + (displayROC ? "ROC Area  " : "") + (displayPRC ? "PRC Area  " : ""));
+        + (displayROC ? "ROC Area  " : "") + (displayPRC ? "PRC Area  " : "")
+        + (displaySen ? "Sensitivity  ": "") + (displaySpec ? "Specificity  " : "")) ;
 
     if (m_pluginMetrics != null && m_pluginMetrics.size() > 0) {
       for (AbstractEvaluationMetric m : m_pluginMetrics) {
@@ -3463,6 +3466,22 @@ public class Evaluation implements Summarizable, RevisionHandler, Serializable {
         } else {
           text.append(String.format("%-10.3f", prcVal));
         }
+      }
+      if(displaySen){
+          double sen = sensitivity(i);
+          if (Utils.isMissingValue(sen)) {
+            text.append("?        ");
+          } else{
+            text.append(String.format("%-11.3f",sensitivity(i)));
+          }
+      }
+      if(displaySpec){
+          double spec = specificity(i);
+          if (Utils.isMissingValue(spec)) {
+            text.append("?        ");
+          } else {
+            text.append(String.format("  %-11.3f",specificity(i)));    
+          }
       }
 
       if (m_pluginMetrics != null && m_pluginMetrics.size() > 0) {
@@ -3561,6 +3580,22 @@ public class Evaluation implements Summarizable, RevisionHandler, Serializable {
       } else {
         text.append(String.format("%-10.3f", wprc));
       }
+    }
+    if (displaySen) {
+      double wSen = weightedSensitivity();
+      if (Utils.isMissingValue(wSen)) {
+        text.append("?         ");
+      } else {
+          text.append(String.format("%-10.3f",wSen));
+      }       
+    }
+    if (displaySpec) {
+      double wSpec = weightedSpecificity();
+      if (Utils.isMissingValue(wSpec)) {
+        text.append("?         ");
+      } else {
+          text.append(String.format("   %-11.3f",wSpec));
+      }       
     }
 
     if (m_pluginMetrics != null && m_pluginMetrics.size() > 0) {
@@ -3839,6 +3874,44 @@ public class Evaluation implements Summarizable, RevisionHandler, Serializable {
   }
 
   /**
+   * Calculates the weighted (by class size) sensitivity. Unclassified instances are not 
+   * included in the calculation.
+   * 
+   * @return the weighted sensitivity.
+   */
+  public double weightedSensitivity() {
+      
+      double[] classCounts = trueClassCounts();
+      double sensitivityTotal = 0; 
+      for(int i = 0; i < m_NumClasses; i++) {
+          if(classCounts[i] > 0) {
+              sensitivityTotal += sensitivity(i) * classCounts[i];
+          }
+      }
+      
+      return sensitivityTotal / numClassified();
+  }
+  
+    /**
+   * Calculates the weighted (by class size) specificity. Unclassified instances are not 
+   * included in the calculation.
+   * 
+   * @return the weighted specificity.
+   */
+  public double weightedSpecificity() {
+      
+      double[] classCounts = trueClassCounts();
+      double specificityTotal = 0; 
+      for(int i = 0; i < m_NumClasses; i++) {
+          if(classCounts[i] > 0) {
+              specificityTotal += specificity(i) * classCounts[i];
+          }
+      }
+      
+      return specificityTotal / numClassified();
+  }
+  
+  /**
    * Calculate the true negative rate with respect to a particular class. This
    * is defined as
    * <p/>
@@ -3961,6 +4034,26 @@ public class Evaluation implements Summarizable, RevisionHandler, Serializable {
     return numFalsePositives(classIndex) / numNegatives;
   }
 
+  /**
+   * Calculate the specificity value
+   * @param classIndex the index of the class to consider
+   * @return the specificity
+   */
+  public double specificity(int classIndex){
+      
+      return numTrueNegatives(classIndex) / (numFalsePositives(classIndex) + numTrueNegatives(classIndex));
+  }
+  
+  /**
+   * Calculate the sensitivity value
+   * @param classIndex the index of the class to consider
+   * @return the sensitivity
+   */
+  public double sensitivity(int classIndex){
+  
+      return numTruePositives(classIndex) / (numTruePositives(classIndex) + numFalseNegatives(classIndex));
+  }
+  
   /**
    * Calculates the weighted (by class size) false positive rate. Unclassified instances are not
    * included in the calculation.
