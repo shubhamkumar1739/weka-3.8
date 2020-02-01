@@ -1186,9 +1186,9 @@ public class ClassifierPanel extends AbstractPerspective implements
       if (!onlySetPriors) {
         if (costMatrix != null) {
           eval =
-            new Evaluation(new Instances(mappedClassifierHeader, 0), costMatrix);
+            new Evaluation(new Instances(mappedClassifierHeader, 0), costMatrix,classifier.getClass().toString());
         } else {
-          eval = new Evaluation(new Instances(mappedClassifierHeader, 0));
+          eval = new Evaluation(new Instances(mappedClassifierHeader, 0),null,classifier.getClass().toString());
         }
       }
 
@@ -1547,7 +1547,7 @@ public class ClassifierPanel extends AbstractPerspective implements
             switch (testMode) {
             case 3: // Test on training
               m_Log.statusMessage("Evaluating on training data...");
-              eval = new Evaluation(inst, costMatrix);
+              eval = new Evaluation(inst, costMatrix,classifier.getClass().toString());
 
               // make adjustments if the classifier is an InputMappedClassifier
               eval =
@@ -1623,7 +1623,7 @@ public class ClassifierPanel extends AbstractPerspective implements
                 m_Log.statusMessage("Stratifying instances...");
                 inst.stratify(numFolds);
               }
-              eval = new Evaluation(inst, costMatrix);
+              eval = new Evaluation(inst, costMatrix,classifier.getClass().toString());
 
               // make adjustments if the classifier is an InputMappedClassifier
               eval =
@@ -1749,7 +1749,7 @@ public class ClassifierPanel extends AbstractPerspective implements
                   + trainSize + " instances) ===\n\n");
                 outBuff.append(current.toString() + "\n");
               }
-              eval = new Evaluation(train, costMatrix);
+              eval = new Evaluation(train, costMatrix,classifier.getClass().toString());
 
               // make adjustments if the classifier is an InputMappedClassifier
               eval =
@@ -1809,7 +1809,7 @@ public class ClassifierPanel extends AbstractPerspective implements
 
             case 4: // Test on user split
               m_Log.statusMessage("Evaluating on test data...");
-              eval = new Evaluation(inst, costMatrix);
+              eval = new Evaluation(inst, costMatrix,classifier.getClass().toString());
               // make adjustments if the classifier is an InputMappedClassifier
               eval =
                 setupEval(eval, classifier, inst, costMatrix, plotInstances,
@@ -3184,7 +3184,7 @@ public class ClassifierPanel extends AbstractPerspective implements
             m_Log.statusMessage("Evaluating on test data...");
             m_Log.logMessage("Re-evaluating classifier (" + name
               + ") on test set");
-            eval = new Evaluation(userTestStructure, costMatrix);
+            eval = new Evaluation(userTestStructure, costMatrix,classifier.getClass().toString());
             eval.setMetricsToDisplay(m_selectedEvalMetrics);
 
             // set up the structure of the plottable instances for

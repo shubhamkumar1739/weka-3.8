@@ -215,6 +215,10 @@ public class Evaluation implements Serializable, Summarizable, RevisionHandler {
     m_delegate = new weka.classifiers.evaluation.Evaluation(data, costMatrix);
   }
 
+    public Evaluation(Instances instances, CostMatrix costMatrix, String toString)throws Exception {
+     m_delegate = new weka.classifiers.evaluation.Evaluation(instances,costMatrix,toString);
+    }
+
   /**
    * Returns the header of the underlying dataset.
    * 

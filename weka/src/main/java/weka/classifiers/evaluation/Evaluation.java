@@ -59,6 +59,7 @@ import java.util.Random;
 import java.util.stream.Stream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+import weka.core.converters.XLSXConverter;
 
 /**
  * Class for evaluating machine learning models.
@@ -418,6 +419,10 @@ public class Evaluation implements Summarizable, RevisionHandler, Serializable {
   protected double m_TotalCoverage;
 
   /**
+   * Name of the sheet
+   */
+  private String m_SheetName;
+  /**
    * Minimum target value.
    */
   protected double m_MinTarget;
@@ -447,6 +452,11 @@ public class Evaluation implements Summarizable, RevisionHandler, Serializable {
    * whether to discard predictions (and save memory).
    */
   protected boolean m_DiscardPredictions;
+  
+  /**
+   * Converts to XLSX format
+   */
+  private XLSXConverter m_XLSXConverter;
 
   /**
    * Holds plugin evaluation metrics
@@ -494,6 +504,59 @@ public class Evaluation implements Summarizable, RevisionHandler, Serializable {
     }
 
     return allEvals;
+  }
+  
+  public Evaluation(Instances data, CostMatrix costmatrix, String name)throws Exception
+  {
+    this(data,costmatrix);
+    m_SheetName = name+" "+System.currentTimeMillis();
+    ArrayList<String> row = new ArrayList();
+    
+    row.add("");
+    
+    boolean displayTP = m_metricsToDisplay.contains("tp rate");
+    boolean displayFP = m_metricsToDisplay.contains("fp rate");
+    boolean displayP = m_metricsToDisplay.contains("precision");
+    boolean displayR = m_metricsToDisplay.contains("recall");
+    boolean displayFM = m_metricsToDisplay.contains("f-measure");
+    boolean displayMCC = m_metricsToDisplay.contains("mcc");
+    boolean displayROC = m_metricsToDisplay.contains("roc area");
+    boolean displayPRC = m_metricsToDisplay.contains("prc area");
+    boolean displaySen = m_metricsToDisplay.contains("sensitivity");
+    boolean displaySpec = m_metricsToDisplay.contains("specificity");
+    
+    if(displayTP){
+        row.add("TP Rate");
+    }
+    if(displayFP){
+        row.add("FP Rate");
+    }
+    if(displayP){
+        row.add("Precision");
+    }
+    if(displayR){
+        row.add("Recall");
+    }
+    if(displayFM){
+        row.add("F-Measure");
+    }
+    if(displayMCC){
+        row.add("MCC");
+    }
+    if(displayROC){
+        row.add("ROC Area");
+    }
+    if(displayPRC){
+        row.add("PRC Area");
+    }
+    if(displaySen){
+        row.add("Sensitivity");
+    }
+    if(displaySpec){
+        row.add("Specificity");
+    }
+    m_XLSXConverter = new XLSXConverter(row.size(),m_SheetName);
+    m_XLSXConverter.addRowToSheet(row);
   }
 
   /**
@@ -573,7 +636,7 @@ public class Evaluation implements Summarizable, RevisionHandler, Serializable {
           m_metricsToDisplay.add(m.getMetricName().toLowerCase());
         }
       }
-    }
+    }    
   }
 
   /**
@@ -3370,7 +3433,7 @@ public class Evaluation implements Summarizable, RevisionHandler, Serializable {
     boolean displayPRC = m_metricsToDisplay.contains("prc area");
     boolean displaySen = m_metricsToDisplay.contains("sensitivity");
     boolean displaySpec = m_metricsToDisplay.contains("specificity");
-
+    
     StringBuffer text =
       new StringBuffer(title + "\n                 "
         + (displayTP ? "TP Rate  " : "") + (displayFP ? "FP Rate  " : "")
@@ -3401,86 +3464,109 @@ public class Evaluation implements Summarizable, RevisionHandler, Serializable {
 
     text.append("Class\n");
     for (int i = 0; i < m_NumClasses; i++) {
+        
+      ArrayList<String> row = new ArrayList<>();
+      row.add("");
+    
       text.append("                 ");
       if (displayTP) {
         double tpr = truePositiveRate(i);
         if (Utils.isMissingValue(tpr)) {
           text.append("?        ");
+          row.add("?");
         } else {
           text.append(String.format("%-9.3f", tpr));
+          row.add(String.format("%-9.3f", tpr));
         }
       }
       if (displayFP) {
         double fpr = falsePositiveRate(i);
         if (Utils.isMissingValue(fpr)) {
           text.append("?        ");
+          row.add("?");
         } else {
           text.append(String.format("%-9.3f", fpr));
+          row.add(String.format("%-9.3f", fpr));
         }
       }
       if (displayP) {
         double p = precision(i);
         if (Utils.isMissingValue(p)) {
           text.append("?          ");
+          row.add("?");
         } else {
           text.append(String.format("%-11.3f", precision(i)));
+          row.add(String.format("%-11.3f", precision(i)));
         }
       }
       if (displayR) {
         double r = recall(i);
         if (Utils.isMissingValue(r)) {
           text.append("?        ");
+          row.add("?");
         } else {
           text.append(String.format("%-9.3f", recall(i)));
+          row.add(String.format("%-9.3f", recall(i)));
         }
       }
       if (displayFM) {
         double fm = fMeasure(i);
         if (Utils.isMissingValue(fm)) {
           text.append("?          ");
+          row.add("?");
         } else {
           text.append(String.format("%-11.3f", fMeasure(i)));
+          row.add(String.format("%-11.3f", fMeasure(i)));
         }
       }
       if (displayMCC) {
         double mat = matthewsCorrelationCoefficient(i);
         if (Utils.isMissingValue(mat)) {
           text.append("?        ");
+          row.add("?");
         } else {
-          text.append(String
-            .format("%-9.3f", matthewsCorrelationCoefficient(i)));
+          text.append(String.format("%-9.3f", matthewsCorrelationCoefficient(i)));
+          row.add(String.format("%-9.3f", matthewsCorrelationCoefficient(i)));
         }
       }
       if (displayROC) {
         double rocVal = areaUnderROC(i);
         if (Utils.isMissingValue(rocVal)) {
           text.append("?         ");
+          row.add("?");
         } else {
           text.append(String.format("%-10.3f", rocVal));
+          row.add(String.format("%-10.3f", rocVal));
         }
       }
       if (displayPRC) {
         double prcVal = areaUnderPRC(i);
         if (Utils.isMissingValue(prcVal)) {
           text.append("?         ");
+          row.add("?");
         } else {
           text.append(String.format("%-10.3f", prcVal));
+          row.add(String.format("%-10.3f", prcVal));
         }
       }
       if(displaySen){
           double sen = sensitivity(i);
           if (Utils.isMissingValue(sen)) {
             text.append("?        ");
+            row.add("?");
           } else{
             text.append(String.format("%-11.3f",sensitivity(i)));
+            row.add(String.format("%-11.3f",sensitivity(i)));
           }
       }
       if(displaySpec){
           double spec = specificity(i);
           if (Utils.isMissingValue(spec)) {
             text.append("?        ");
+            row.add("?");
           } else {
             text.append(String.format("  %-11.3f",specificity(i)));    
+            row.add(String.format("  %-11.3f",specificity(i)));
           }
       }
 
@@ -3501,10 +3587,12 @@ public class Evaluation implements Summarizable, RevisionHandler, Serializable {
                   }
                   if (Utils.isMissingValue(stat)) {
                     Utils.padRight("?", name.length());
+                    //row.add("?");
                   } else {
                     text.append(
                       String.format("%-" + name.length() + ".3f", stat))
                       .append("  ");
+                    //row.add(String.format("%-" + name.length() + ".3f", stat));
                   }
                 }
               }
@@ -3514,89 +3602,115 @@ public class Evaluation implements Summarizable, RevisionHandler, Serializable {
       }
 
       text.append(m_ClassNames[i]).append('\n');
+      m_XLSXConverter.addRowToSheet(row);
     }
-
+    
+    ArrayList<String> row = new ArrayList<>();
     text.append("Weighted Avg.    ");
+    row.add("Weighted Avg.");
     if (displayTP) {
       double wtpr = weightedTruePositiveRate();
       if (Utils.isMissingValue(wtpr)) {
         text.append("?        ");
+        row.add("?");
       } else {
         text.append(String.format("%-9.3f", wtpr));
+        row.add(String.format("%-9.3f", wtpr));
       }
     }
     if (displayFP) {
       double wfpr = weightedFalsePositiveRate();
       if (Utils.isMissingValue(wfpr)) {
         text.append("?        ");
+        row.add("?");
       } else {
         text.append(String.format("%-9.3f", wfpr));
+        row.add(String.format("%-9.3f", wfpr));
       }
     }
     if (displayP) {
       double wp = weightedPrecision();
       if (Utils.isMissingValue(wp)) {
         text.append("?          ");
+        row.add("?");
       } else {
         text.append(String.format("%-11.3f", wp));
+        row.add(String.format("%-11.3f", wp));
       }
     }
     if (displayR) {
       double wr = weightedRecall();
       if (Utils.isMissingValue(wr)) {
         text.append("?        ");
+        row.add("?");
       } else {
         text.append(String.format("%-9.3f", wr));
+        row.add(String.format("%-9.3f", wr));
       }
     }
     if (displayFM) {
       double wf = weightedFMeasure();
       if (Utils.isMissingValue(wf)) {
         text.append("?          ");
+        row.add("?");
       } else {
         text.append(String.format("%-11.3f", wf));
+        row.add(String.format("%-11.3f", wf));
       }
     }
     if (displayMCC) {
       double wmc = weightedMatthewsCorrelation();
       if (Utils.isMissingValue(wmc)) {
         text.append("?        ");
+        row.add("?");
       } else {
         text.append(String.format("%-9.3f", wmc));
+        row.add(String.format("%-9.3f", wmc));
       }
     }
     if (displayROC) {
       double wroc = weightedAreaUnderROC();
       if (Utils.isMissingValue(wroc)) {
         text.append("?         ");
+        row.add("?");
       } else {
         text.append(String.format("%-10.3f", wroc));
+        row.add(String.format("%-10.3f", wroc));
       }
     }
     if (displayPRC) {
       double wprc = weightedAreaUnderPRC();
       if (Utils.isMissingValue(wprc)) {
         text.append("?         ");
+        row.add("?");
       } else {
         text.append(String.format("%-10.3f", wprc));
+        row.add(String.format("%-10.3f", wprc));
       }
     }
     if (displaySen) {
       double wSen = weightedSensitivity();
       if (Utils.isMissingValue(wSen)) {
         text.append("?         ");
+        row.add("?");
       } else {
           text.append(String.format("%-10.3f",wSen));
+          row.add(String.format("%-10.3f",wSen));
       }       
     }
     if (displaySpec) {
       double wSpec = weightedSpecificity();
       if (Utils.isMissingValue(wSpec)) {
         text.append("?         ");
+        row.add("?");
       } else {
           text.append(String.format("   %-11.3f",wSpec));
+          row.add(String.format("   %-11.3f",wSpec));
       }       
     }
+    
+    m_XLSXConverter.addRowToSheet(row);
+    m_XLSXConverter.write();
 
     if (m_pluginMetrics != null && m_pluginMetrics.size() > 0) {
       for (AbstractEvaluationMetric m : m_pluginMetrics) {

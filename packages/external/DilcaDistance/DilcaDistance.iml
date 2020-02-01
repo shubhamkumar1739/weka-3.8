@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="main5" />
+    <orderEntry type="module" module-name="main39" />
+    <orderEntry type="module" module-name="test6" />
+    <orderEntry type="module" module-name="main9" />
+    <orderEntry type="module" module-name="main25" />
+    <orderEntry type="module" module-name="test95" />
+    <orderEntry type="module" module-name="test55" />
+    <orderEntry type="module" module-name="test12" />
+    <orderEntry type="module" module-name="main45" />
+    <orderEntry type="module" module-name="test57" />
+    <orderEntry type="module" module-name="test81" />
+    <orderEntry type="module" module-name="test85" />
+    <orderEntry type="module" module-name="main50" />
+    <orderEntry type="module" module-name="test17" />
+    <orderEntry type="module" module-name="test10" />
+    <orderEntry type="module" module-name="main42" />
+    <orderEntry type="module" module-name="test59" />
+    <orderEntry type="module" module-name="main23" />
+    <orderEntry type="module" module-name="main16" />
+    <orderEntry type="module" module-name="main52" />
+    <orderEntry type="module" module-name="test19" />
+    <orderEntry type="module" module-name="main18" />
+    <orderEntry type="module" module-name="main97" />
+    <orderEntry type="module" module-name="main55" />
+    <orderEntry type="module" module-name="main37" />
+    <orderEntry type="module" module-name="test9" />
+    <orderEntry type="module" module-name="main46" />
+    <orderEntry type="module" module-name="test40" />
+    <orderEntry type="module" module-name="main82" />
+    <orderEntry type="module" module-name="test42" />
+    <orderEntry type="module" module-name="test93" />
+    <orderEntry type="module" module-name="main38" />
+    <orderEntry type="module" module-name="main53" />
+    <orderEntry type="module" module-name="test84" />
+    <orderEntry type="module" module-name="main100" />
+    <orderEntry type="module" module-name="test48" />
+    <orderEntry type="module" module-name="test104" />
+    <orderEntry type="module" module-name="main3" />
+    <orderEntry type="module" module-name="test41" />
+    <orderEntry type="module" module-name="main86" />
+    <orderEntry type="module" module-name="main60" />
+    <orderEntry type="module" module-name="test61" />
+    <orderEntry type="module" module-name="main92" />
+    <orderEntry type="module" module-name="test100" />
+    <orderEntry type="module" module-name="main89" />
+    <orderEntry type="module" module-name="test37" />
+    <orderEntry type="module" module-name="main75" />
+    <orderEntry type="module" module-name="main59" />
+    <orderEntry type="module" module-name="test52" />
+    <orderEntry type="module" module-name="test51" />
+    <orderEntry type="module" module-name="test29" />
+    <orderEntry type="module" module-name="main103" />
+    <orderEntry type="module" module-name="main35" />
+  </component>
+</module>

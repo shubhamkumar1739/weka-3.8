@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="lib7" level="project" />
+    <orderEntry type="module" module-name="test46" />
+    <orderEntry type="module" module-name="main88" />
+    <orderEntry type="module" module-name="test6" />
+    <orderEntry type="module" module-name="kfGroovy" />
+    <orderEntry type="module" module-name="main57" />
+    <orderEntry type="module" module-name="main68" />
+    <orderEntry type="module" module-name="main82" />
+    <orderEntry type="module" module-name="main31" />
+    <orderEntry type="module" module-name="main11" />
+    <orderEntry type="module" module-name="main25" />
+    <orderEntry type="module" module-name="main53" />
+    <orderEntry type="module" module-name="main61" />
+    <orderEntry type="module" module-name="levenshteinEditDistance" />
+    <orderEntry type="module" module-name="test102" />
+    <orderEntry type="module" module-name="test47" />
+    <orderEntry type="module" module-name="main14" />
+    <orderEntry type="module" module-name="newKnowledgeFlowStepExamples" />
+    <orderEntry type="module" module-name="test" />
+    <orderEntry type="module" module-name="DilcaDistance" />
+    <orderEntry type="module" module-name="main66" />
+    <orderEntry type="module" module-name="main79" />
+    <orderEntry type="module" module-name="main23" />
+    <orderEntry type="module" module-name="test19" />
+    <orderEntry type="module" module-name="test90" />
+    <orderEntry type="module" module-name="distributedWekaSpark" />
+    <orderEntry type="module" module-name="main98" />
+    <orderEntry type="module" module-name="streamingUnivariateStats" />
+    <orderEntry type="module" module-name="scatterPlot3D" />
+    <orderEntry type="module" module-name="kfKettle" />
+    <orderEntry type="module" module-name="test7" />
+    <orderEntry type="module" module-name="main59" />
+    <orderEntry type="module" module-name="test77" />
+    <orderEntry type="module" module-name="main96" />
+    <orderEntry type="module" module-name="prefuseGraphViewer" />
+    <orderEntry type="module" module-name="test22" />
+    <orderEntry type="module" module-name="main26" />
+    <orderEntry type="module" module-name="distributedWekaHadoopCore" />
+    <orderEntry type="module" module-name="main55" />
+  </component>
+</module>
