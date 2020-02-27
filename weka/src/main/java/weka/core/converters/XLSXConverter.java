@@ -22,6 +22,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import shubham.develop.BarPlotsXLSX;
 
 /**
  *
@@ -69,6 +70,9 @@ public class XLSXConverter {
             fileOutputStream = new FileOutputStream(m_FilePath+"/Users/DELL/Documents/Weka/Ouputs/"+m_Filename+".xlsx");
             m_Workbook.write(fileOutputStream);
             fileOutputStream.close();
+            
+            BarPlotsXLSX plots = new BarPlotsXLSX(m_FilePath+"/Users/DELL/Documents/Weka/Ouputs/"+m_Filename+".xlsx","");
+            plots.plot();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(XLSXConverter.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

@@ -338,6 +338,7 @@ public class PreprocessPanel extends AbstractPerspective implements
     });
     m_OpenFileBut.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+        //file is selected
         setInstancesFromFileQ();
       }
     });
@@ -420,6 +421,8 @@ public class PreprocessPanel extends AbstractPerspective implements
       .createTitledBorder("Attributes"));
     attStuffHolderPanel.setLayout(new BorderLayout());
     attStuffHolderPanel.add(m_AttPanel, BorderLayout.CENTER);
+    
+    //remove attribute
     m_RemoveButton.setEnabled(false);
     m_RemoveButton.setToolTipText("Remove selected attributes.");
     m_RemoveButton.addActionListener(new ActionListener() {

@@ -236,6 +236,7 @@ public class AttributeSelectionPanel extends AbstractPerspective implements
       .addPropertyChangeListener(new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent e) {
+          //attribute evaluator selection
           if (m_AttributeEvaluatorEditor.getValue() instanceof AttributeEvaluator) {
             if (!(m_AttributeSearchEditor.getValue() instanceof Ranker)) {
               Object backup = m_AttributeEvaluatorEditor.getBackup();
@@ -407,6 +408,7 @@ public class AttributeSelectionPanel extends AbstractPerspective implements
     m_StartBut.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
+        //Clicked Start
         boolean proceed = true;
         if (Explorer.m_Memory.memoryIsLow()) {
           proceed = Explorer.m_Memory.showMemoryIsLow();
