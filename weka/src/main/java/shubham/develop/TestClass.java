@@ -23,7 +23,7 @@ import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.unsupervised.attribute.PrincipalComponents;
 
 /**
- *
+ * The diver class which can run all of the other utility classes
  * @author DELL
  */
 public class TestClass {

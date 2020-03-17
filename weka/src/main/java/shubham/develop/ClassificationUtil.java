@@ -47,7 +47,12 @@ public class ClassificationUtil {
     private boolean mOutputPerClass = true;
     private int mNumFolds = 10;
     private double mPercent = 66;
-    
+    /**
+     * Function for classification 
+     * @params: classifier - the classifier instance
+     * inst: the input instances for classification
+     * classIndex: index of the target class for classification
+     */
     public void classify(Classifier classifier,Instances inst,int opt,int classIndex)throws Exception {
         CostMatrix costmatrix = null;
         classifier.getCapabilities();
