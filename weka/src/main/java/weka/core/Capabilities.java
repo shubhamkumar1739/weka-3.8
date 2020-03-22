@@ -96,7 +96,6 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 
   /** whether to test for minimum number of instances */
   protected static boolean MINIMUM_NUMBER_INSTANCES_TEST;
-
   static {
     // load properties
     if (PROPERTIES == null) {
